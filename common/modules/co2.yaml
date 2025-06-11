@@ -18,10 +18,23 @@ sensor:
   - platform: scd4x
     i2c_id: bus_b
     id: scd40
+    ambient_pressure_compensation_source: indoor_pressure
+    temperature_offset: 12.5
+    update_interval: 30s
     measurement_mode: low_power_periodic    
     co2:
       name: "CO2"
       id: "co2"
+    temperature:
+      name: "Temperature"
+      id: "temperature"
+      filters:
+        - lambda: return x - id(scd40_temperature_offset).state;
+    humidity:
+      name: "Humidity"
+      id: "humidity"
+      filters:
+        - lambda: return x - id(scd40_humidity_offset).state;
     automatic_self_calibration: false
 
 button:
